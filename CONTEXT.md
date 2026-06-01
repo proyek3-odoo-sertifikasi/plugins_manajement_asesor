@@ -1,6 +1,9 @@
 # AGENT PROMPT: PENGEMBANGAN MODUL CUSTOM PENUGASAN ASESOR
 ## Sistem ERP LSP Berbasis Odoo 19
 
+> 📌 **AGENTS.md** telah dibuat sebagai ringkasan agent context.  
+> File ini (CONTEXT.md) adalah dokumen spesifikasi detail referensi tim.
+
 ---
 
 ## 🎯 KONTEKS PROYEK
