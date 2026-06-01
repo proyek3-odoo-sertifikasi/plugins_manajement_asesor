@@ -31,11 +31,12 @@ class LspPenugasanLine(models.Model):
         help='Nomor atau nama ruangan tempat asesor ini bertugas. '
              'Sesuai kolom Pitstop pada jadwal.',
     )
+    # TODO: replace with lsp.asesi model from lsp_pengajuan_asesi
     asesi_ids = fields.Many2many(
-        comodel_name='lsp.student',
-        relation='lsp_penugasan_line_student_rel',
+        comodel_name='res.partner',
+        relation='lsp_penugasan_line_asesi_rel',
         column1='line_id',
-        column2='student_id',
+        column2='partner_id',
         string='Daftar Asesi',
     )
     slot_waktu_ids = fields.One2many(

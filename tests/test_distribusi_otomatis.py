@@ -26,27 +26,18 @@ class TestDistribusiOtomatis(TransactionCase):
             })
             cls.asesor_users |= user
 
-        # Buat user & asesi (lsp.student)
-        cls.asesi_records = cls.env['lsp.student']
+        # Buat partner asesi
+        cls.asesi_partners = cls.env['res.partner']
         for i in range(1, 31):
-            user = cls.env['res.users'].create({
+            partner = cls.env['res.partner'].create({
                 'name': 'Asesi Distrib %d' % i,
-                'login': 'asesi_distrib_test_%d' % i,
                 'email': 'asesi_distrib_%d@test.com' % i,
             })
-            student = cls.env['lsp.student'].create({
-                'user_id': user.id,
-                'full_name': 'Asesi Distrib %d' % i,
-                'email': 'asesi_distrib_%d@test.com' % i,
-                'nik': 'NIKDISTRIB%03d' % i,
-                'school': 'smk_negeri_1_rembang',
-                'state': 'verified',
-            })
-            cls.asesi_records |= student
+            cls.asesi_partners |= partner
 
     def _create_jadwal(self, asesi_count):
         """Helper: buat jadwal dengan sejumlah asesi."""
-        asesi = self.asesi_records[:asesi_count]
+        asesi = self.asesi_partners[:asesi_count]
         jadwal = self.env['lsp.jadwal.ujian'].create({
             'name': 'Jadwal Distrib %d asesi' % asesi_count,
             'skema_id': 'Skema Distrib Test',

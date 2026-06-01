@@ -74,9 +74,8 @@
                                    string="Waktu"
                                    readonly="1"/>
                             <field name="asesi_ids"
-                                    widget="many2many_tags"
-                                    string="Asesi di Slot Ini"
-                                    domain="[('id', 'in', parent.asesi_ids)]"/>
+                                   widget="many2many_tags"
+                                   string="Asesi di Slot Ini"/>
                             <field name="jumlah_asesi_slot"
                                    string="Jml. Asesi"
                                    readonly="1"/>

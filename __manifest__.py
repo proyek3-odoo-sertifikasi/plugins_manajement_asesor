@@ -16,7 +16,8 @@
         'base',
         'mail',
         'portal',
-        'plugins_registrasi',
+        # Tambahkan 'lsp_pengajuan_asesi' jika modul tersebut sudah siap
+        # Tambahkan 'lsp_penjadwalan_ujian' jika modul jadwal sudah siap
     ],
     'data': [
         'security/lsp_penugasan_security.xml',

@@ -81,9 +81,8 @@
                                            string="Ruangan (Pitstop)"
                                            readonly="parent.state == 'dikunci'"
                                            placeholder="Contoh: 1, 2, Ruang A..."/>
-                                     <field name="asesi_ids" widget="many2many_tags"
-                                            readonly="parent.state == 'dikunci'"
-                                            domain="[('id', 'in', parent.jadwal_id.asesi_ids)]"/>
+                                    <field name="asesi_ids" widget="many2many_tags"
+                                           readonly="parent.state == 'dikunci'"/>
                                     <field name="jumlah_asesi"/>
                                     <field name="is_overload" column_invisible="1"/>
                                     <field name="state" column_invisible="1"/>

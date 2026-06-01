@@ -1,5 +1,4 @@
 import math
-import datetime
 
 from odoo import api, fields, models, _
 # pyrefly: ignore [missing-import]
@@ -65,13 +64,13 @@ class LspJadwalUjian(models.Model):
         tracking=True,
         copy=False,
     )
+    # TODO: replace with lsp.asesi model from lsp_pengajuan_asesi
     asesi_ids = fields.Many2many(
-        comodel_name='lsp.student',
-        relation='lsp_jadwal_ujian_student_rel',
+        comodel_name='res.partner',
+        relation='lsp_jadwal_ujian_asesi_rel',
         column1='jadwal_id',
-        column2='student_id',
+        column2='partner_id',
         string='Daftar Asesi',
-        domain="[('state', '=', 'verified')]",
     )
     penugasan_ids = fields.One2many(
         comodel_name='lsp.penugasan.asesor',
@@ -158,12 +157,13 @@ class LspJadwalUjian(models.Model):
 
     def action_set_terjadwal(self):
         """Mengubah status jadwal menjadi terjadwal."""
-        self.ensure_one()
-        if self.state == 'draft':
-            self.state = 'terjadwal'
+        for record in self:
+            if record.state == 'draft':
+                record.state = 'terjadwal'
 
     def action_mulai_penugasan(self):
         """Membuat record penugasan baru terkait jadwal ini dan mengubah state."""
+        import datetime
         self.ensure_one()
         if self.state not in ['terjadwal', 'penugasan']:
             raise UserError(_('Penugasan hanya dapat dimulai dari jadwal berstatus "Terjadwal" atau "Proses Penugasan".'))

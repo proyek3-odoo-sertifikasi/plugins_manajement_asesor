@@ -18,7 +18,7 @@ class LspWizardTambahAsesor(models.TransientModel):
     asesor_ids = fields.Many2many(
         comodel_name='res.users',
         string='Asesor',
-        domain=lambda self: [('groups_id', 'in', self.env.ref('plugins_manajement_asesor.group_asesor').id)],
+        domain=[('share', '=', False)],  # Filter internal users (groups_id dihapus di Odoo 17+)
     )
     preview_info = fields.Text(
         string='Informasi Preview',
