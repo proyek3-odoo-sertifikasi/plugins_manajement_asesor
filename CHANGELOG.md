@@ -1,8 +1,34 @@
 # Dokumentasi Perubahan Modul `plugins_manajement_asesor`
 
-> **Versi:** Revisi Sesi Mei 2026  
-> **Dibuat oleh:** Tim D4-3B POLBAN  
-> **Referensi Excel:** Jadwal Ujian LSP (Senin 17 Feb & Selasa 18 Feb 2023)
+> **Versi:** 19.0.1.0.0  
+> **Dibuat oleh:** Tim D4-3B POLBAN
+
+---
+
+## [19.0.1.0.0] — Integrasi dengan `plugins_registrasi`
+
+### Perubahan
+
+| # | File | Perubahan |
+|---|------|-----------|
+| 1 | `__manifest__.py` | Tambah `plugins_registrasi` ke `depends` |
+| 2 | `models/lsp_jadwal_ujian.py` | `asesi_ids`: `res.partner` → `lsp.student`, domain `verified` |
+| 3 | `models/lsp_penugasan_line.py` | `asesi_ids`: `res.partner` → `lsp.student` |
+| 4 | `models/lsp_slot_waktu.py` | `asesi_ids`: `res.partner` → `lsp.student` |
+| 5 | `models/lsp_student_inherit.py` | File baru: override `name_get()` tampilkan `full_name (NIK)` |
+| 6 | `security/ir.model.access.csv` | Tambah akses `lsp.student` untuk admin & asesor |
+| 7 | `views/*.xml` | Domain filter asesi sesuai jadwal/line terkait |
+| 8 | `views/portal_templates.xml` | `asesi.name` → `asesi.full_name` |
+| 9 | `data/lsp_penugasan_data.xml` | `asesi.name` → `asesi.full_name` (mail template) |
+| 10 | `demo/demo_data.xml` | `res.partner` → `lsp.student` (25 asesi + user) |
+| 11 | `tests/*` | `res.partner` → `lsp.student` |
+
+### Audit Fixes
+
+- Pindahkan `import datetime` ke top file
+- Filter wizard asesor_ids spesifik ke group asesor
+- Hapus `res.groups.privilege` (incompatible Community Edition)
+- Tambah `ensure_one()` di `action_set_terjadwal`
 
 ---
 

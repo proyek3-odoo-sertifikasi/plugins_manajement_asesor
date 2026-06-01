@@ -166,39 +166,29 @@ Setelah instalasi, konfigurasikan group berikut untuk setiap user yang terlibat:
 
 ## 🔗 Catatan Dependensi dengan Modul Lain
 
-### Dependensi Wajib (sudah terinstall di Odoo default)
+### Dependensi Wajib
 
 | Modul | Kegunaan |
 |-------|----------|
 | `base` | Model dasar Odoo (`res.users`, `res.partner`) |
 | `mail` | Chatter, tracking, notifikasi email, mail template |
 | `portal` | Portal website untuk Asesor (`/my/penugasan`) |
+| `plugins_registrasi` | Menyediakan data asesi (`lsp.student`) yang sudah terverifikasi |
 
-### Dependensi Opsional (Integrasi FASE 2)
+### Integrasi dengan Modul LSP Lainnya
 
-Modul ini dirancang untuk bisa berdiri sendiri (FASE 1). Ketika modul LSP lain sudah siap, lakukan integrasi sebagai berikut:
+Saat ini modul sudah terintegrasi dengan `plugins_registrasi` sebagai sumber data asesi (`lsp.student`).
+
+Integrasi berikutnya yang masih bisa dilakukan:
 
 | Modul Tujuan | Perubahan yang Diperlukan |
 |--------------|--------------------------|
-| `lsp_pengajuan_asesi` | Ganti `res.partner` di `asesi_ids` dengan model `lsp.asesi`. Hapus tag `# TODO: replace with lsp.asesi` di kode. |
 | `lsp_penjadwalan_ujian` | Ubah `lsp.jadwal.ujian` dari `_name` menjadi `_inherit` (extend model dari modul jadwal). Hapus definisi model minimal di `models/lsp_jadwal_ujian.py`. |
 | `lsp_skema_sertifikasi` | Ubah field `skema_id` dari `Char` menjadi `Many2one` ke `lsp.skema.sertifikasi`. |
 
-### Cara Integrasi FASE 2
-
-1. Tambahkan nama modul ke `depends` di `__manifest__.py`:
-   ```python
-   'depends': [
-       'base',
-       'mail',
-       'portal',
-       'lsp_pengajuan_asesi',       # Uncomment setelah modul siap
-       'lsp_penjadwalan_ujian',     # Uncomment setelah modul siap
-   ],
-   ```
-
-2. Update model sesuai catatan `# TODO` di file Python.
-
+Cara integrasi:
+1. Tambahkan nama modul ke `depends` di `__manifest__.py`
+2. Update model sesuai catatan `# TODO` di file Python
 3. Jalankan update modul:
    ```bash
    docker compose exec odoo-web odoo -u plugins_manajement_asesor -d postgres --stop-after-init
@@ -220,7 +210,9 @@ plugins_manajement_asesor/
 │   ├── __init__.py
 │   ├── lsp_jadwal_ujian.py
 │   ├── lsp_penugasan_asesor.py
-│   └── lsp_penugasan_line.py
+│   ├── lsp_penugasan_line.py
+│   ├── lsp_slot_waktu.py
+│   └── lsp_student_inherit.py
 │
 ├── wizards/
 │   ├── __init__.py

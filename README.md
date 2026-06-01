@@ -41,6 +41,8 @@ Modul **plugins_manajement_asesor** adalah esktensi custom Odoo 19 untuk Sistem 
   - `base`
   - `mail` (untuk fitur pengiriman notifikasi/log)
   - `portal` (untuk akses Asesor eksternal)
+- Modul Ekosistem LSP:
+  - `plugins_registrasi` — menyediakan data asesi (`lsp.student`) yang sudah terverifikasi
 - Ketergantungan Ekosistem LSP (Opsial/Sesuai Konteks):
   - Sistem Penjadwalan Ujian 
 

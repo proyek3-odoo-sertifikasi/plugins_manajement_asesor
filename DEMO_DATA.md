@@ -9,8 +9,8 @@ Berikut adalah panduan lengkap cara memuat dan menggunakan data dummy tersebut.
 ## 1. Apa Isi dari Demo Data?
 Data dummy ini akan secara otomatis memasukkan *record* berikut ke dalam database Odoo Anda:
 1. **2 User Asesor**: `Asesor Joko` dan `Asesor Rina` (Password login: `admin`).
-2. **25 Partner Asesi**: Dinamai secara berurutan `Asesi 01` hingga `Asesi 25`.
-3. **1 Jadwal Ujian**: Bernama `"Ujian Web Developer (Skenario 25 Asesi)"` yang sudah ditautkan secara langsung dengan ke-25 Asesi di atas.
+2. **25 User Asesi + 25 Student Records**: Masing-masing `lsp.student` dengan state `verified`, nama `Asesi 01`–`Asesi 25`, login `asesi01`–`asesi25`.
+3. **1 Jadwal Ujian**: Bernama `"Ujian Web Developer (Skenario 25 Asesi)"` yang sudah ditautkan dengan ke-25 asesi via `asesi_ids`.
 
 ---
 

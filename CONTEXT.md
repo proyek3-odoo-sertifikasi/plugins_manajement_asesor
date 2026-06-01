@@ -203,7 +203,7 @@ Field-field wajib yang harus ada di model ini:
 - `tanggal_selesai`: Datetime (required)
 - `ruangan`: Char
 - `state`: Selection `[('draft','Draft'),('terjadwal','Terjadwal'),('penugasan','Proses Penugasan'),('berlangsung','Berlangsung'),('selesai','Selesai')]`
-- `asesi_ids`: Many2many ke `res.partner` (dengan domain yang memfilter hanya asesi yang sudah disetujui)
+- `asesi_ids`: Many2many ke `lsp.student` (dari modul `plugins_registrasi`, domain filter hanya asesi yang sudah `verified`)
 - `penugasan_ids`: One2many ke `lsp.penugasan.asesor`
 - `jumlah_asesi`: Integer (computed, count dari `asesi_ids`)
 - `jumlah_asesor_dibutuhkan`: Integer (computed: `math.ceil(jumlah_asesi / 10)`)
@@ -285,7 +285,7 @@ _description: 'Detail Baris Penugasan Asesor'
 - `penugasan_id`: Many2one `lsp.penugasan.asesor`, required, `ondelete='cascade'`
 - `asesor_id`: Many2one `res.users`, required, domain filter hanya user dengan group asesor
 - `asesor_partner_id`: Many2one `res.partner`, related dari `asesor_id.partner_id`, readonly
-- `asesi_ids`: Many2many `res.partner` (atau model asesi custom), dengan domain filter asesi pada jadwal yang sama
+- `asesi_ids`: Many2many `lsp.student` (dari modul `plugins_registrasi`), dengan domain filter asesi pada jadwal yang sama
 - `jumlah_asesi`: Integer, computed: `len(self.asesi_ids)`, `store=True`
 - `is_overload`: Boolean, computed: `self.jumlah_asesi > 10`
 - `state`: Selection, related dari `penugasan_id.state`, readonly (untuk kontrol readonly di view)
@@ -656,20 +656,22 @@ Buat:
 
 ## 🔗 INTEGRASI DENGAN MODUL LAIN
 
-Karena modul lain mungkin belum selesai, gunakan pendekatan berikut:
+### Status Integrasi Saat Ini
 
+| Modul | Status | Keterangan |
+|-------|--------|------------|
+| `plugins_registrasi` | ✅ **Terintegrasi** | `lsp.student` sebagai data asesi, domain `verified` |
+| `lsp_penjadwalan_ujian` | ⏳ Belum | Model `lsp.jadwal.ujian` masih dibuat sendiri di modul ini |
+| `lsp_skema_sertifikasi` | ⏳ Belum | Field `skema_id` masih `Char`, belum Many2one |
+
+### Catatan Integrasi ke Depan
+
+Untuk integrasi modul lain yang belum siap:
 ```python
 # Strategi integrasi bertahap:
-# 
-# FASE 1 (modul ini berdiri sendiri):
-#   - Buat model lsp.jadwal.ujian minimal di dalam modul ini
-#   - Gunakan res.partner dengan tag 'asesi' untuk data asesi sementara
-#   - Tandai dengan komentar: # TODO: replace with lsp.asesi model from lsp_pengajuan_asesi
-#
-# FASE 2 (setelah modul lain siap):
-#   - Ubah _name menjadi _inherit di model yang overlap
-#   - Update depends di __manifest__.py
-#   - Hapus model minimal yang sudah digantikan
+# - Ubah _name menjadi _inherit di model yang overlap
+# - Update depends di __manifest__.py
+# - Hapus model minimal yang sudah digantikan
 ```
 
 ---
