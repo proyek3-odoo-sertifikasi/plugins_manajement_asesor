@@ -27,7 +27,7 @@ Modul **`plugins_manajement_asesor`** adalah modul Odoo 19 untuk sistem LSP (Lem
 plugins_manajement_asesor/
 ├── __init__.py
 ├── __manifest__.py
-├── AGENTS.md / CONTEXT.md
+├── AGENTS.md
 ├── CHANGELOG.md / DEMO_DATA.md / INSTALLATION.md / README.md
 │
 ├── models/

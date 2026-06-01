@@ -22,7 +22,6 @@ Modul **plugins_manajement_asesor** adalah esktensi custom Odoo 19 untuk Sistem 
 ## 📚 Dokumentasi Lengkap
 - [Panduan Instalasi & Pengujian](INSTALLATION.md)
 - [Panduan Penggunaan Demo Data](DEMO_DATA.md)
-- [Konteks & Aturan Bisnis](CONTEXT.md)
 - [Catatan Perubahan](CHANGELOG.md)
 
 ## ✨ Fitur Utama
