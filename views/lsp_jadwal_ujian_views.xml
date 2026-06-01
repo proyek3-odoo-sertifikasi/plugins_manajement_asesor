@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== -->
+    <!-- Form View             -->
+    <!-- ===================== -->
+    <record id="lsp_penugasan_jadwal_ujian_form" model="ir.ui.view">
+        <field name="name">lsp.jadwal.ujian.form</field>
+        <field name="model">lsp.jadwal.ujian</field>
+        <field name="arch" type="xml">
+            <form string="Jadwal Ujian">
+                <header>
+                    <button name="action_set_terjadwal"
+                            string="Konfirmasi Jadwal"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_mulai_penugasan"
+                            string="Mulai Penugasan Asesor"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ('terjadwal', 'penugasan')"
+                            confirm="Apakah Anda yakin ingin memulai proses penugasan asesor untuk jadwal ini?"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,terjadwal,penugasan,berlangsung,selesai"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nama/Kode Jadwal" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informasi Jadwal">
+                            <field name="skema_id"/>
+                            <!-- Rentang tanggal pelaksanaan ujian -->
+                            <field name="tanggal_mulai"/>
+                            <field name="tanggal_selesai"/>
+                            <!-- Jam pelaksanaan ujian setiap harinya -->
+                            <label for="waktu_mulai" string="Jam Ujian (Harian)"/>
+                            <div class="o_field_widget">
+                                <field name="waktu_mulai"
+                                       widget="float_time"
+                                       class="oe_inline"
+                                       style="width:80px"/>
+                                <span class="mx-1">–</span>
+                                <field name="waktu_selesai"
+                                       widget="float_time"
+                                       class="oe_inline"
+                                       style="width:80px"/>
+                            </div>
+                        </group>
+                        <group string="Statistik">
+                            <field name="jumlah_asesi"/>
+                            <field name="jumlah_asesor_dibutuhkan"/>
+                            <field name="jumlah_asesor_tersedia"/>
+                            <field name="is_kuota_cukup" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Daftar Asesi" name="asesi">
+                            <field name="asesi_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Penugasan" name="penugasan">
+                            <field name="penugasan_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <!-- tanggal_penugasan = hari spesifik ujian untuk penugasan ini -->
+                                    <field name="tanggal_penugasan" string="Tanggal Ujian (Spesifik)"/>
+                                    <field name="total_asesor"/>
+                                    <field name="total_asesi"/>
+                                    <field name="state" widget="badge"
+                                           decoration-info="state == 'draft'"
+                                           decoration-success="state == 'dikunci'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- List View             -->
+    <!-- ===================== -->
+    <record id="lsp_penugasan_jadwal_ujian_tree" model="ir.ui.view">
+        <field name="name">lsp.jadwal.ujian.list</field>
+        <field name="model">lsp.jadwal.ujian</field>
+        <field name="arch" type="xml">
+            <list string="Jadwal Ujian">
+                <field name="name"/>
+                <field name="skema_id"/>
+                <field name="tanggal_mulai"/>
+                <field name="tanggal_selesai"/>
+                <field name="waktu_mulai_display" string="Jam Mulai"/>
+                <field name="waktu_selesai_display" string="Jam Selesai"/>
+                <field name="jumlah_asesi"/>
+                <field name="jumlah_asesor_dibutuhkan"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'terjadwal'"
+                       decoration-primary="state == 'penugasan'"
+                       decoration-success="state == 'selesai'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- Search View           -->
+    <!-- ===================== -->
+    <record id="lsp_penugasan_jadwal_ujian_search" model="ir.ui.view">
+        <field name="name">lsp.jadwal.ujian.search</field>
+        <field name="model">lsp.jadwal.ujian</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="skema_id"/>
+                <field name="tanggal_mulai"/>
+                <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                <filter string="Terjadwal" name="filter_terjadwal" domain="[('state','=','terjadwal')]"/>
+                <filter string="Proses Penugasan" name="filter_penugasan" domain="[('state','=','penugasan')]"/>
+                <filter string="Berlangsung" name="filter_berlangsung" domain="[('state','=','berlangsung')]"/>
+                <filter string="Selesai" name="filter_selesai" domain="[('state','=','selesai')]"/>
+                <separator/>
+                <filter string="Kelompokkan: Tanggal" name="group_tanggal" context="{'group_by': 'tanggal_mulai'}"/>
+                <filter string="Kelompokkan: Status" name="group_state" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
