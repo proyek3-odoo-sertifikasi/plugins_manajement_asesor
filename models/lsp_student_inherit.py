@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 class LspStudent(models.Model):
     _inherit = 'lsp.student'
+    _rec_name = 'full_name'
 
     # Override payment_state agar bisa di-search (untuk domain di Many2many)
     payment_state = fields.Selection(
