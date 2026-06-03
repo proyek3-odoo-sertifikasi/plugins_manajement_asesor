@@ -64,23 +64,23 @@
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Kode Penugasan</strong></td>
-                                                    <td>{{ object.name }}</td>
+                                                    <td><t t-out="object.name"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Jadwal Ujian</strong></td>
-                                                    <td>{{ object.jadwal_id.name }}</td>
+                                                    <td><t t-out="object.jadwal_id.name"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Skema Sertifikasi</strong></td>
-                                                    <td>{{ object.skema_display or '-' }}</td>
+                                                    <td><t t-out="object.skema_display or '-'"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Periode Ujian</strong></td>
-                                                    <td>{{ object.jadwal_id.tanggal_mulai }} s/d {{ object.jadwal_id.tanggal_selesai }}</td>
+                                                    <td><t t-out="object.jadwal_id.tanggal_mulai"/> s/d <t t-out="object.jadwal_id.tanggal_selesai"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Waktu Ujian</strong></td>
-                                                    <td>{{ object.jadwal_id.waktu_mulai_display }} – {{ object.jadwal_id.waktu_selesai_display }}</td>
+                                                    <td><t t-out="object.jadwal_id.waktu_mulai_display"/> – <t t-out="object.jadwal_id.waktu_selesai_display"/></td>
                                                 </tr>
                                             </table>
 
@@ -100,7 +100,7 @@
 
                                             <p>Silakan cek detail penugasan Anda melalui portal:</p>
                                             <p style="text-align: center; margin: 16px 0;">
-                                                <a href="/my/penugasan/{{ object.id }}"
+                                                <a t-attf-href="/my/penugasan/{{ object.id }}"
                                                    style="background-color: #875A7B; padding: 10px 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 14px;">
                                                     Lihat Penugasan Saya
                                                 </a>
