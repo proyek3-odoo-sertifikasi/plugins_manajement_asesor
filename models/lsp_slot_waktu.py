@@ -52,12 +52,11 @@ class LspSlotWaktu(models.Model):
         store=True,
         help='Format tampilan: 07.30-09.00',
     )
-    # TODO: replace with lsp.asesi model from lsp_pengajuan_asesi
     asesi_ids = fields.Many2many(
-        comodel_name='res.partner',
+        comodel_name='lsp.student',
         relation='lsp_slot_waktu_asesi_rel',
         column1='slot_id',
-        column2='partner_id',
+        column2='student_id',
         string='Asesi di Slot Ini',
     )
     jumlah_asesi_slot = fields.Integer(

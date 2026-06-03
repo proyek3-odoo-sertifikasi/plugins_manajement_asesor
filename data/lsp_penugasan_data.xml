@@ -89,7 +89,7 @@
                                                 <p style="margin-top:8px;"><strong>Asesor:</strong> <t t-out="line.asesor_id.name"/></p>
                                                 <ol style="margin-top:0px; margin-bottom:8px;">
                                                     <t t-foreach="line.asesi_ids" t-as="asesi">
-                                                        <li><t t-out="asesi.name"/></li>
+                                                        <li><t t-out="asesi.full_name"/></li>
                                                     </t>
                                                 </ol>
                                             </t>

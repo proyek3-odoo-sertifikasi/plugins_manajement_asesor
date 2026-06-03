@@ -1,23 +1,24 @@
 {
-    'name': 'LSP - Penugasan Asesor',
-    'version': '19.0.1.0.0',
-    'category': 'LSP/Sertifikasi',
-    'summary': 'Modul penugasan asesor ke asesi dengan validasi rasio kuota otomatis untuk LSP',
+    'name': 'Penjadwalan & Manajemen Asesor',
+    'version': '19.0.1.1.0',
+    'category': 'LSP/Penjadwalan & Manajemen Asesor',
+    'summary': 'Modul penjadwalan ujian dan penugasan asesor ke asesi dengan validasi rasio kuota otomatis',
     'description': """
         Modul ini mengelola:
+        - Penjadwalan ujian sertifikasi
         - Pemetaan Asesor ke Asesi secara otomatis dan merata
         - Validasi rasio kuota (maks 1 Asesor : 10 Asesi)
         - Penguncian data penugasan (audit trail)
         - Notifikasi otomatis ke Asesor
         - Portal Asesor untuk melihat penugasan
+        - Integrasi dengan billing module (hanya asesi yang sudah paid)
     """,
     'author': 'Tim Manajemen Asesor - D4-3B POLBAN',
     'depends': [
         'base',
         'mail',
         'portal',
-        # Tambahkan 'lsp_pengajuan_asesi' jika modul tersebut sudah siap
-        # Tambahkan 'lsp_penjadwalan_ujian' jika modul jadwal sudah siap
+        'plugins_custom_billing_module',
     ],
     'data': [
         'security/lsp_penugasan_security.xml',
@@ -37,7 +38,7 @@
         ],
     },
     'installable': True,
-    'application': False,
+    'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
 }

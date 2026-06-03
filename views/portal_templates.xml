@@ -178,7 +178,7 @@
                                                                     <t t-set="i" t-value="i+1"/>
                                                                     <tr>
                                                                         <td><t t-esc="i"/></td>
-                                                                        <td><t t-esc="asesi.name"/></td>
+                                                                        <td><t t-esc="asesi.full_name"/></td>
                                                                         <td><t t-esc="asesi.email or '-'"/></td>
                                                                     </tr>
                                                                 </t>

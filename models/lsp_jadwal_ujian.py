@@ -64,13 +64,13 @@ class LspJadwalUjian(models.Model):
         tracking=True,
         copy=False,
     )
-    # TODO: replace with lsp.asesi model from lsp_pengajuan_asesi
     asesi_ids = fields.Many2many(
-        comodel_name='res.partner',
+        comodel_name='lsp.student',
         relation='lsp_jadwal_ujian_asesi_rel',
         column1='jadwal_id',
-        column2='partner_id',
+        column2='student_id',
         string='Daftar Asesi',
+        domain="[('payment_state', '=', 'paid')]",
     )
     penugasan_ids = fields.One2many(
         comodel_name='lsp.penugasan.asesor',
