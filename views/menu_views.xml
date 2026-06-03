@@ -5,24 +5,16 @@
     <!-- Menu Definitions      -->
     <!-- ===================== -->
 
-    <!-- Top Menu: LSP -->
+    <!-- Top Menu: Penugasan Asesor -->
     <menuitem
         id="lsp_penugasan_menu_root"
-        name="LSP"
+        name="Penugasan Asesor"
         sequence="100"
     />
 
-    <!-- Menu Group: Penugasan Asesor -->
-    <menuitem
-        id="lsp_penugasan_menu_group"
-        name="Penugasan Asesor"
-        parent="lsp_penugasan_menu_root"
-        sequence="10"
-    />
-
-    <!-- Action: Semua Penugasan -->
+    <!-- Action: Penugasan Asesor -->
     <record id="lsp_penugasan_action_penugasan" model="ir.actions.act_window">
-        <field name="name">Semua Penugasan</field>
+        <field name="name">Penugasan Asesor</field>
         <field name="res_model">lsp.penugasan.asesor</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
@@ -35,12 +27,20 @@
         </field>
     </record>
 
+    <!-- Menu: Penugasan Asesor -->
     <menuitem
         id="lsp_penugasan_menu_semua_penugasan"
-        name="Semua Penugasan"
-        parent="lsp_penugasan_menu_group"
+        name="Penugasan Asesor"
+        parent="lsp_penugasan_menu_root"
         action="lsp_penugasan_action_penugasan"
         sequence="10"
+    />
+
+    <!-- Top Menu: Jadwal Ujian -->
+    <menuitem
+        id="lsp_jadwal_ujian_menu_root"
+        name="Jadwal Ujian"
+        sequence="110"
     />
 
     <!-- Action: Jadwal Ujian -->
@@ -58,12 +58,13 @@
         </field>
     </record>
 
+    <!-- Menu: Jadwal Ujian -->
     <menuitem
         id="lsp_penugasan_menu_jadwal_ujian"
         name="Jadwal Ujian"
-        parent="lsp_penugasan_menu_group"
+        parent="lsp_jadwal_ujian_menu_root"
         action="lsp_penugasan_action_jadwal_ujian"
-        sequence="20"
+        sequence="10"
     />
 
 </odoo>
