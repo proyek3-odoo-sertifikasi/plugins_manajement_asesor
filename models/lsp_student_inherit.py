@@ -12,43 +12,39 @@ class LspStudent(models.Model):
 
     @api.model
     def _search_payment_state(self, operator, value):
-        """Custom search agar payment_state (non-stored computed) bisa digunakan di domain."""
+        """Custom search agar payment_state (non-stored) bisa digunakan di domain.
+
+        Strategi: cari sale.order yang terhubung ke student (lsp_student_id),
+        lalu filter payment_settlement_state di Python karena field non-stored.
+        """
+        # Ambil semua sale.order yang terhubung ke student (pakai stored field)
+        orders = self.env['sale.order'].sudo().search([
+            ('lsp_student_id', '!=', False),
+        ])
+        paid_order_ids = [
+            o.id for o in orders
+            if o.payment_settlement_state == 'paid'
+        ]
+
         if operator == '=' and value == 'paid':
-            # Cari sale.order yang semua invoice-nya sudah paid
-            paid_orders = self.env['sale.order'].sudo().search([
-                ('invoice_ids', '!=', False),
-            ])
-            paid_order_ids = [
-                o.id for o in paid_orders
-                if o.payment_settlement_state == 'paid'
-            ]
             return [('sale_order_id', 'in', paid_order_ids)]
         elif operator == '!=' and value == 'paid':
-            paid_orders = self.env['sale.order'].sudo().search([
-                ('invoice_ids', '!=', False),
-            ])
-            paid_order_ids = [
-                o.id for o in paid_orders
-                if o.payment_settlement_state == 'paid'
-            ]
             return [
                 '|',
                 ('sale_order_id', '=', False),
                 ('sale_order_id', 'not in', paid_order_ids),
             ]
-        # Fallback generik
+
+        # Fallback generik untuk operator/value lain
         all_students = self.sudo().search([])
         matching_ids = []
         for student in all_students:
-            match = False
-            if operator == '=' and student.payment_state == value:
-                match = True
-            elif operator == '!=' and student.payment_state != value:
-                match = True
-            elif operator == 'in' and student.payment_state in value:
-                match = True
-            elif operator == 'not in' and student.payment_state not in value:
-                match = True
+            match = (
+                (operator == '=' and student.payment_state == value) or
+                (operator == '!=' and student.payment_state != value) or
+                (operator == 'in' and student.payment_state in (value or [])) or
+                (operator == 'not in' and student.payment_state not in (value or []))
+            )
             if match:
                 matching_ids.append(student.id)
         return [('id', 'in', matching_ids)]

@@ -37,18 +37,26 @@ class TestPenugasanAsesor(TransactionCase):
             'group_ids': [(4, cls.group_asesor.id)],
         })
 
-        # Buat partner asesi
-        cls.asesi_partners = cls.env['res.partner']
+        # Buat user + student asesi
+        cls.asesi_students = cls.env['lsp.student']
         for i in range(1, 21):
-            partner = cls.env['res.partner'].create({
-                'name': 'Asesi Test %d' % i,
-                'email': 'asesi%d@test.com' % i,
+            user = cls.env['res.users'].create({
+                'name': 'Asesi User Test %d' % i,
+                'login': 'asesi_user_test_%d' % i,
+                'email': 'asesi_user_%d@test.com' % i,
             })
-            cls.asesi_partners |= partner
+            student = cls.env['lsp.student'].create({
+                'user_id': user.id,
+                'email': 'asesi%d@test.com' % i,
+                'full_name': 'Asesi Test %d' % i,
+                'nik': 'TEST%04d' % i,
+                'school': 'smk_negeri_1_rembang',
+            })
+            cls.asesi_students |= student
 
     def _create_jadwal(self, asesi_count=10):
         """Helper: buat jadwal dengan sejumlah asesi."""
-        asesi = self.asesi_partners[:asesi_count]
+        asesi = self.asesi_students[:asesi_count]
         jadwal = self.env['lsp.jadwal.ujian'].create({
             'name': 'Jadwal Test %d asesi' % asesi_count,
             'skema_id': 'Skema Test',
@@ -99,7 +107,7 @@ class TestPenugasanAsesor(TransactionCase):
 
         with self.assertRaises(ValidationError) as ctx:
             line.write({
-                'asesi_ids': [(6, 0, self.asesi_partners[:11].ids)],
+                'asesi_ids': [(6, 0, self.asesi_students[:11].ids)],
             })
         self.assertIn('10 asesi', str(ctx.exception),
                       "Pesan error harus menyebutkan batas 10 asesi.")
@@ -178,6 +186,9 @@ class TestPenugasanAsesor(TransactionCase):
         self.assertTrue(penugasan.is_valid,
                         "Penugasan harus valid sebelum dikunci.")
 
+        # Set ruangan sebelum kunci
+        penugasan.penugasan_line_ids.write({'ruangan': 'Ruangan A'})
+
         penugasan.action_kunci_penugasan()
         self.assertEqual(penugasan.state, 'dikunci',
                          "State harus berubah ke 'dikunci'.")
@@ -191,6 +202,10 @@ class TestPenugasanAsesor(TransactionCase):
         penugasan = self._create_penugasan(jadwal, [self.asesor_user_1])
 
         penugasan.action_distribusi_otomatis()
+
+        # Set ruangan sebelum kunci
+        penugasan.penugasan_line_ids.write({'ruangan': 'Ruangan A'})
+
         penugasan.action_kunci_penugasan()
 
         self.assertEqual(penugasan.state, 'dikunci',
