@@ -164,14 +164,29 @@ class LspPenugasanAsesor(models.Model):
             record.is_valid = record.total_asesor >= record.jumlah_asesor_dibutuhkan
 
     def action_distribusi_otomatis(self):
-        """Distribusi asesi ke asesor secara otomatis dan merata (round-robin)."""
+        """Distribusi asesi ke asesor secara otomatis dan merata (round-robin).
+
+        Jika jadwal belum memiliki asesi, akan otomatis mencari asesi berstatus
+        paid dari database dan menambahkannya ke jadwal.
+        """
         self.ensure_one()
 
-        asesi_list = self.jadwal_id.asesi_ids
+        jadwal = self.jadwal_id
+        asesi_list = jadwal.asesi_ids
         asesor_lines = self.penugasan_line_ids
 
         if not asesor_lines:
             raise UserError(_('Belum ada asesor yang ditambahkan. Silakan tambahkan asesor terlebih dahulu.'))
+
+        # Auto-populate asesi dari database jika jadwal belum memiliki asesi
+        if not asesi_list:
+            paid_students = self.env['lsp.student'].sudo().search([
+                ('payment_state', '=', 'paid'),
+            ])
+            if not paid_students:
+                raise UserError(_('Tidak ditemukan asesi dengan status pembayaran LUNAS.'))
+            jadwal.write({'asesi_ids': [(6, 0, paid_students.ids)]})
+            asesi_list = jadwal.asesi_ids
 
         asesor_dibutuhkan = math.ceil(len(asesi_list) / 10)
         if len(asesor_lines) < asesor_dibutuhkan:
