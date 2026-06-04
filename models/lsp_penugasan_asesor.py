@@ -180,11 +180,13 @@ class LspPenugasanAsesor(models.Model):
 
         # Auto-populate asesi dari database jika jadwal belum memiliki asesi
         if not asesi_list:
+            major_code = self.jadwal_id.skema_major_code
             paid_students = self.env['lsp.student'].sudo().search([
                 ('payment_state', '=', 'paid'),
+                ('major_smk', '=', major_code),
             ])
             if not paid_students:
-                raise UserError(_('Tidak ditemukan asesi dengan status pembayaran LUNAS.'))
+                raise UserError(_('Tidak ditemukan asesi dengan status pembayaran LUNAS dan jurusan yang cocok (%s).') % major_code)
             jadwal.write({'asesi_ids': [(6, 0, paid_students.ids)]})
             asesi_list = jadwal.asesi_ids
 

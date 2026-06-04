@@ -94,4 +94,9 @@
         <field name="perm_unlink" eval="True"/>
     </record>
 
+    <!-- Assign Admin User to Admin LSP Group (Odoo 19: field is user_ids) -->
+    <record id="group_admin_lsp" model="res.groups">
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
 </odoo>

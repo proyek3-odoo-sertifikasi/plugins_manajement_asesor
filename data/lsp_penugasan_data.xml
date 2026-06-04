@@ -121,4 +121,20 @@
         </field>
     </record>
 
+    <!-- Skema Sertifikasi Records -->
+    <record id="skema_rpl" model="lsp.skema.sertifikasi">
+        <field name="name">Rekayasa Perangkat Lunak (RPL)</field>
+        <field name="code">rpl</field>
+    </record>
+
+    <record id="skema_bdp" model="lsp.skema.sertifikasi">
+        <field name="name">Bisnis Daring dan Pemasaran (BDP)</field>
+        <field name="code">bdp</field>
+    </record>
+
+    <record id="skema_tbsm" model="lsp.skema.sertifikasi">
+        <field name="name">Teknik dan Bisnis Sepeda Motor (TBSM)</field>
+        <field name="code">tbsm</field>
+    </record>
+
 </odoo>

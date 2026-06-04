@@ -23,6 +23,7 @@
         <!-- di billing module. Tidak perlu dummy asesi dari res.partner.     -->
         <record id="demo_jadwal_ujian_skenario_1" model="lsp.jadwal.ujian">
             <field name="name">Ujian Web Developer (Demo)</field>
+            <field name="skema_id" ref="skema_rpl"/>
             <field name="tanggal_mulai">2026-10-10 08:00:00</field>
             <field name="tanggal_selesai">2026-10-10 16:00:00</field>
             <field name="state">terjadwal</field>

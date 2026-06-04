@@ -17,8 +17,15 @@ class LspJadwalUjian(models.Model):
         default=lambda self: _('New'),
     )
     # TODO: replace with Many2one ke lsp.skema.sertifikasi when module is ready
-    skema_id = fields.Char(
+    skema_id = fields.Many2one(
+        comodel_name='lsp.skema.sertifikasi',
         string='Skema Sertifikasi',
+        required=True,
+    )
+    skema_major_code = fields.Char(
+        related='skema_id.code',
+        store=True,
+        string='Kode Jurusan Skema',
     )
     tanggal_mulai = fields.Date(
         string='Tanggal Mulai',
@@ -70,7 +77,7 @@ class LspJadwalUjian(models.Model):
         column1='jadwal_id',
         column2='student_id',
         string='Daftar Asesi',
-        domain="[('payment_state', '=', 'paid')]",
+        domain="[('payment_state', '=', 'paid'), ('major_smk', '=', skema_major_code)]",
     )
     penugasan_ids = fields.One2many(
         comodel_name='lsp.penugasan.asesor',

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action: Skema Sertifikasi -->
+    <record id="lsp_skema_sertifikasi_action" model="ir.actions.act_window">
+        <field name="name">Skema Sertifikasi</field>
+        <field name="res_model">lsp.skema.sertifikasi</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada skema sertifikasi.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="lsp_skema_sertifikasi_view_tree" model="ir.ui.view">
+        <field name="name">lsp.skema.sertifikasi.view.tree</field>
+        <field name="model">lsp.skema.sertifikasi</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="survey_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="lsp_skema_sertifikasi_view_form" model="ir.ui.view">
+        <field name="name">lsp.skema.sertifikasi.view.form</field>
+        <field name="model">lsp.skema.sertifikasi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="survey_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Menu: Skema Sertifikasi under Jadwal Ujian root -->
+    <menuitem
+        id="lsp_skema_sertifikasi_menu"
+        name="Skema Sertifikasi"
+        parent="lsp_jadwal_ujian_menu_root"
+        action="lsp_skema_sertifikasi_action"
+        sequence="20"
+    />
+</odoo>

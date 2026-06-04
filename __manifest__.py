@@ -19,6 +19,7 @@
         'mail',
         'portal',
         'plugins_custom_billing_module',
+        'survey',
     ],
     'data': [
         'security/lsp_penugasan_security.xml',
@@ -26,6 +27,7 @@
         'data/lsp_penugasan_data.xml',
         'views/wizard_tambah_asesor_views.xml',
         'views/menu_views.xml',
+        'views/lsp_skema_sertifikasi_views.xml',
         'views/lsp_jadwal_ujian_views.xml',
         'views/lsp_penugasan_asesor_views.xml',
         'views/lsp_penugasan_line_views.xml',

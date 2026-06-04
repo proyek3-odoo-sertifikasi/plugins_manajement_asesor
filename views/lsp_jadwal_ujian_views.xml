@@ -59,7 +59,8 @@
                     </group>
                     <notebook>
                         <page string="Daftar Asesi" name="asesi">
-                            <field name="asesi_ids" widget="many2many_tags"/>
+                            <field name="skema_major_code" invisible="1"/>
+                            <field name="asesi_ids" widget="many2many_tags" domain="[('payment_state', '=', 'paid'), ('major_smk', '=', skema_major_code)]"/>
                         </page>
                         <page string="Penugasan" name="penugasan">
                             <field name="penugasan_ids" readonly="1">
