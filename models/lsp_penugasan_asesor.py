@@ -178,15 +178,32 @@ class LspPenugasanAsesor(models.Model):
         if not asesor_lines:
             raise UserError(_('Belum ada asesor yang ditambahkan. Silakan tambahkan asesor terlebih dahulu.'))
 
+        # Filter out students who have already passed (Lulus/Kompeten)
+        passed_assessments = self.env['lsp.hasil.asesmen'].sudo().search([
+            ('status_kelulusan', '=', 'lulus')
+        ])
+        passed_student_ids = passed_assessments.mapped('student_id.id')
+
+        if asesi_list:
+            valid_asesi = asesi_list.filtered(lambda a: a.id not in passed_student_ids)
+            if len(valid_asesi) < len(asesi_list):
+                jadwal.write({'asesi_ids': [(6, 0, valid_asesi.ids)]})
+                asesi_list = valid_asesi
+
         # Auto-populate asesi dari database jika jadwal belum memiliki asesi
         if not asesi_list:
             major_code = self.jadwal_id.skema_major_code
-            paid_students = self.env['lsp.student'].sudo().search([
+            
+            domain = [
                 ('payment_state', '=', 'paid'),
                 ('major_smk', '=', major_code),
-            ])
+            ]
+            if passed_student_ids:
+                domain.append(('id', 'not in', passed_student_ids))
+                
+            paid_students = self.env['lsp.student'].sudo().search(domain)
             if not paid_students:
-                raise UserError(_('Tidak ditemukan asesi dengan status pembayaran LUNAS dan jurusan yang cocok (%s).') % major_code)
+                raise UserError(_('Tidak ditemukan asesi dengan status pembayaran LUNAS dan jurusan yang cocok (%s) yang belum lulus.') % major_code)
             jadwal.write({'asesi_ids': [(6, 0, paid_students.ids)]})
             asesi_list = jadwal.asesi_ids
 
