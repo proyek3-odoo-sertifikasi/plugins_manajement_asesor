@@ -26,6 +26,11 @@ class LspPenugasanLine(models.Model):
         readonly=True,
         store=False,
     )
+    skema_major_code = fields.Char(
+        string='Kode Skema Major',
+        related='penugasan_id.jadwal_id.skema_major_code',
+        readonly=True,
+    )
     ruangan = fields.Char(
         string='Ruangan (Pitstop)',
         help='Nomor atau nama ruangan tempat asesor ini bertugas. '
@@ -37,7 +42,7 @@ class LspPenugasanLine(models.Model):
         column1='line_id',
         column2='student_id',
         string='Daftar Asesi',
-        domain="[('payment_state', '=', 'paid')]",
+        domain="[('payment_state', '=', 'paid'), ('major_smk', '=', skema_major_code), ('is_eligible_for_exam', '=', True)]",
     )
     slot_waktu_ids = fields.One2many(
         comodel_name='lsp.slot.waktu',

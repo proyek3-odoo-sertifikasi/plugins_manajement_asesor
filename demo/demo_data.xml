@@ -4,17 +4,7 @@
         <!-- ============================================== -->
         <!-- 1. DATA DUMMY ASESOR                           -->
         <!-- ============================================== -->
-        <record id="demo_asesor_1" model="res.users">
-            <field name="name">Asesor Joko</field>
-            <field name="login">asesor_joko</field>
-            <field name="password">admin</field>
-        </record>
-        
-        <record id="demo_asesor_2" model="res.users">
-            <field name="name">Asesor Rina</field>
-            <field name="login">asesor_rina</field>
-            <field name="password">admin</field>
-        </record>
+
 
         <!-- ============================================== -->
         <!-- 2. DATA DUMMY JADWAL UJIAN                     -->

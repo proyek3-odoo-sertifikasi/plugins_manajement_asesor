@@ -23,7 +23,11 @@
                 <group>
                     <field name="penugasan_id" readonly="1"/>
                     <field name="preview_info" readonly="1" widget="text"/>
-                          <field name="asesor_ids" widget="many2many_tags"/>
+                    <field name="skema_id" invisible="1"/>
+                    <field name="unavailable_asesor_ids" invisible="1"/>
+                    <field name="asesor_ids" widget="many2many_tags" 
+                           domain="[('group_ids', 'in', %(plugins_manajement_asesor.group_asesor)d), ('skema_sertifikasi_id', '=', skema_id), ('id', 'not in', unavailable_asesor_ids)]"
+                           options="{'no_create': True, 'no_edit': True}"/>
                 </group>
                 <footer>
                     <button name="action_tambah_asesor"

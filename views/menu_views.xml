@@ -79,4 +79,7 @@
     <menuitem id="plugins_registrasi.menu_plugins_registrasi_root" name="Data Asesi" sequence="80" groups="plugins_manajement_asesor.group_admin_lsp"/>
     <menuitem id="plugins_registrasi.menu_registrasi_asesi" name="Data Asesi" parent="plugins_registrasi.menu_plugins_registrasi_root" groups="plugins_manajement_asesor.group_admin_lsp"/>
 
+    <!-- Allow Admin LSP and Asesor LSP to see Surveys menu -->
+    <menuitem id="survey.menu_surveys" name="Surveys" groups="survey.group_survey_user,plugins_manajement_asesor.group_admin_lsp,plugins_manajement_asesor.group_asesor"/>
+
 </odoo>

@@ -57,3 +57,55 @@ class LspStudent(models.Model):
                 name = '%s (%s)' % (name, student.nik)
             result.append((student.id, name))
         return result
+
+    penugasan_line_ids = fields.Many2many(
+        comodel_name='lsp.penugasan.line',
+        relation='lsp_penugasan_line_asesi_rel',
+        column1='student_id',
+        column2='line_id',
+        string='Penugasan Asesor',
+    )
+    is_eligible_for_exam = fields.Boolean(
+        string='Eligible for Exam',
+        compute='_compute_is_eligible_for_exam',
+        search='_search_is_eligible_for_exam',
+    )
+
+    def _compute_is_eligible_for_exam(self):
+        for student in self:
+            passed = 0
+            if 'lsp.hasil.asesmen' in self.env:
+                passed = self.env['lsp.hasil.asesmen'].search_count([
+                    ('student_id', '=', student.id),
+                    ('status_kelulusan', '=', 'lulus'),
+                ])
+            # Sedang aktif di penugasan yang tidak batal
+            active_assignments = self.env['lsp.penugasan.line'].search_count([
+                ('asesi_ids', 'in', student.id),
+                ('penugasan_id.state', 'not in', ['batal']),
+            ])
+            student.is_eligible_for_exam = (passed == 0) and (active_assignments == 0)
+
+    @api.model
+    def _search_is_eligible_for_exam(self, operator, value):
+        if operator != '=' or not value:
+            return []
+        
+        passed_students = []
+        if 'lsp.hasil.asesmen' in self.env:
+            passed_students = self.env['lsp.hasil.asesmen'].search([
+                ('status_kelulusan', '=', 'lulus')
+            ]).mapped('student_id.id')
+        
+        # 2. Yang sedang aktif di penugasan
+        active_lines = self.env['lsp.penugasan.line'].search([
+            ('penugasan_id.state', 'not in', ['batal'])
+        ])
+        active_students = active_lines.mapped('asesi_ids.id')
+        
+        exclude_ids = list(set(passed_students + active_students))
+        
+        if exclude_ids:
+            return [('id', 'not in', exclude_ids)]
+        else:
+            return [('id', '!=', False)]

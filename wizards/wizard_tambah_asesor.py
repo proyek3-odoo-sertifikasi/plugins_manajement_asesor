@@ -15,11 +15,41 @@ class LspWizardTambahAsesor(models.TransientModel):
         default=lambda self: self.env.context.get('active_id'),
         ondelete='cascade',
     )
+    skema_id = fields.Many2one(
+        comodel_name='lsp.skema.sertifikasi',
+        related='penugasan_id.jadwal_id.skema_id',
+        string='Skema Sertifikasi',
+    )
     asesor_ids = fields.Many2many(
         comodel_name='res.users',
         string='Asesor',
-        domain=[('share', '=', False)],  # Filter internal users (groups_id dihapus di Odoo 17+)
     )
+    unavailable_asesor_ids = fields.Many2many(
+        comodel_name='res.users',
+        relation='wizard_unavailable_asesor_rel',
+        string='Unavailable Asesors',
+        compute='_compute_unavailable_asesors',
+    )
+
+    @api.depends('penugasan_id')
+    def _compute_unavailable_asesors(self):
+        for wizard in self:
+            if not wizard.penugasan_id or not wizard.penugasan_id.jadwal_id:
+                wizard.unavailable_asesor_ids = [(5, 0, 0)]
+                continue
+
+            jadwal = wizard.penugasan_id.jadwal_id
+            domain = [
+                ('id', '!=', jadwal.id),
+                ('tanggal_mulai', '<=', jadwal.tanggal_selesai),
+                ('tanggal_selesai', '>=', jadwal.tanggal_mulai),
+                ('waktu_mulai', '<', jadwal.waktu_selesai),
+                ('waktu_selesai', '>', jadwal.waktu_mulai),
+                ('state', '!=', 'batal'),
+            ]
+            intersecting_jadwals = self.env['lsp.jadwal.ujian'].search(domain)
+            busy_asesor_ids = intersecting_jadwals.mapped('penugasan_ids.penugasan_line_ids.asesor_id.id')
+            wizard.unavailable_asesor_ids = [(6, 0, busy_asesor_ids)]
     preview_info = fields.Text(
         string='Informasi Preview',
         compute='_compute_preview_info',
