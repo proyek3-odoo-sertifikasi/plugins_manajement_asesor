@@ -5,11 +5,12 @@
     <!-- Menu Definitions      -->
     <!-- ===================== -->
 
-    <!-- Top Menu: Penugasan Asesor -->
+    <!-- Top Menu: Penugasan Asesor - Admin LSP only -->
     <menuitem
         id="lsp_penugasan_menu_root"
         name="Penugasan Asesor"
         sequence="100"
+        groups="plugins_manajement_asesor.group_admin_lsp"
     />
 
     <!-- Action: Penugasan Asesor -->
@@ -27,20 +28,22 @@
         </field>
     </record>
 
-    <!-- Menu: Penugasan Asesor -->
+    <!-- Menu: Penugasan Asesor - Admin LSP only -->
     <menuitem
         id="lsp_penugasan_menu_semua_penugasan"
         name="Penugasan Asesor"
         parent="lsp_penugasan_menu_root"
         action="lsp_penugasan_action_penugasan"
         sequence="10"
+        groups="plugins_manajement_asesor.group_admin_lsp"
     />
 
-    <!-- Top Menu: Jadwal Ujian -->
+    <!-- Top Menu: Jadwal Ujian - Admin LSP only -->
     <menuitem
         id="lsp_jadwal_ujian_menu_root"
         name="Jadwal Ujian"
         sequence="110"
+        groups="plugins_manajement_asesor.group_admin_lsp"
     />
 
     <!-- Action: Jadwal Ujian -->
@@ -58,13 +61,22 @@
         </field>
     </record>
 
-    <!-- Menu: Jadwal Ujian -->
+    <!-- Menu: Jadwal Ujian - Admin LSP only -->
     <menuitem
         id="lsp_penugasan_menu_jadwal_ujian"
         name="Jadwal Ujian"
         parent="lsp_jadwal_ujian_menu_root"
         action="lsp_penugasan_action_jadwal_ujian"
         sequence="10"
+        groups="plugins_manajement_asesor.group_admin_lsp"
     />
+
+    <!-- ============================================== -->
+    <!-- Menu Overrides for other modules to apply RBAC -->
+    <!-- ============================================== -->
+
+    <!-- Restrict Registrasi Menus to Admin LSP -->
+    <menuitem id="plugins_registrasi.menu_plugins_registrasi_root" name="Data Asesi" sequence="80" groups="plugins_manajement_asesor.group_admin_lsp"/>
+    <menuitem id="plugins_registrasi.menu_registrasi_asesi" name="Data Asesi" parent="plugins_registrasi.menu_plugins_registrasi_root" groups="plugins_manajement_asesor.group_admin_lsp"/>
 
 </odoo>

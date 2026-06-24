@@ -31,6 +31,7 @@
         'views/lsp_jadwal_ujian_views.xml',
         'views/lsp_penugasan_asesor_views.xml',
         'views/lsp_penugasan_line_views.xml',
+        'views/res_users_views.xml',
         'views/portal_templates.xml',
         'demo/demo_data.xml',
     ],

@@ -23,6 +23,11 @@
         <field name="category_id" ref="module_category_lsp"/>
     </record>
 
+    <record id="privilege_lsp_keuangan" model="res.groups.privilege">
+        <field name="name">Admin Keuangan LSP</field>
+        <field name="category_id" ref="module_category_lsp"/>
+    </record>
+
     <!-- ===================== -->
     <!-- Groups                -->
     <!-- ===================== -->
@@ -31,15 +36,22 @@
     <record id="group_asesor" model="res.groups">
         <field name="name">Asesor LSP</field>
         <field name="privilege_id" ref="privilege_lsp_asesor"/>
-        <field name="comment">Asesor hanya dapat melihat penugasan yang ditugaskan kepadanya (read-only).</field>
+        <field name="comment">Asesor dapat membuat soal, menilai ujian, dan hanya melihat data asesi yang ditugaskan kepadanya.</field>
     </record>
 
     <!-- Group: Admin LSP -->
+    <!-- NOTE: implied_ids ke group_asesor SENGAJA DILEPAS agar Admin LSP tidak bisa membuat soal -->
     <record id="group_admin_lsp" model="res.groups">
         <field name="name">Admin LSP</field>
         <field name="privilege_id" ref="privilege_lsp_admin"/>
-        <field name="implied_ids" eval="[(4, ref('group_asesor'))]"/>
-        <field name="comment">Admin LSP dapat membuat, mengedit, mengunci, dan membuka kunci penugasan.</field>
+        <field name="comment">Admin LSP dapat mengelola registrasi, penugasan asesor, jadwal ujian, dan memverifikasi soal (tidak bisa membuat soal).</field>
+    </record>
+
+    <!-- Group: Admin Keuangan LSP -->
+    <record id="group_lsp_keuangan" model="res.groups">
+        <field name="name">Admin Keuangan LSP</field>
+        <field name="privilege_id" ref="privilege_lsp_keuangan"/>
+        <field name="comment">Admin Keuangan hanya dapat mengakses modul Invoicing dan Sales untuk verifikasi pembayaran.</field>
     </record>
 
     <!-- ===================== -->

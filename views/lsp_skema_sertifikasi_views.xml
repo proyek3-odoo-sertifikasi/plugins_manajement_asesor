@@ -42,12 +42,13 @@
         </field>
     </record>
 
-    <!-- Menu: Skema Sertifikasi under Jadwal Ujian root -->
+    <!-- Menu: Skema Sertifikasi under Jadwal Ujian root - Admin LSP only -->
     <menuitem
         id="lsp_skema_sertifikasi_menu"
         name="Skema Sertifikasi"
         parent="lsp_jadwal_ujian_menu_root"
         action="lsp_skema_sertifikasi_action"
         sequence="20"
+        groups="plugins_manajement_asesor.group_admin_lsp"
     />
 </odoo>

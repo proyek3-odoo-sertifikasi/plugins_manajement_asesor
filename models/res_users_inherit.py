@@ -5,6 +5,13 @@ from odoo.exceptions import ValidationError
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
+    skema_sertifikasi_id = fields.Many2one(
+        'lsp.skema.sertifikasi',
+        string='Skema Sertifikasi (Asesor)',
+        help='Wajib diisi jika user adalah Asesor LSP. Menentukan skema sertifikasi mana yang boleh diakses oleh asesor ini.',
+    )
+
+
     @api.model_create_multi
     def create(self, vals_list):
         users = super().create(vals_list)
